@@ -14,21 +14,23 @@ type TResendBody struct {
 	Html    string `json:"html"`
 }
 
-var RESENT_API_KEY = os.Getenv("RESENT_API_KEY")
-var RESENT_API_URL = os.Getenv("RESENT_API_URL")
-var RESENT_FROM_EMAIL = os.Getenv("RESENT_FROM_EMAIL")
+var RESEND_API_KEY = os.Getenv("RESEND_API_KEY")
+var RESEND_API_URL = os.Getenv("RESEND_API_URL")
+var RESEND_FROM_EMAIL = os.Getenv("RESEND_FROM_EMAIL")
 
-func SendIt(sendItContent TResendBody) int {
+func SendIt(sendItContent *TResendBody) *http.Response {
+	sendItContent.From = RESEND_FROM_EMAIL
 	bodyBytes, _ := json.Marshal(sendItContent)
+
 	req, _ := http.NewRequest(
 		"POST",
-		RESENT_API_URL,
+		RESEND_API_URL,
 		bytes.NewBuffer(bodyBytes))
 
-	req.Header.Set("Authorization", ALLOWED_API_KEY)
-	sendItContent.From = RESENT_FROM_EMAIL
+	req.Header.Set("Authorization", RESEND_API_KEY)
+	req.Header.Set("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
-	return res.StatusCode
+	return res
 }
