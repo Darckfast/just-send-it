@@ -1,6 +1,6 @@
 # ![logo](.github/images/logo.webp)
 
-## 📨 Just send it
+## Just send it
 
 Small serverless project, using Vercel free tier in addition of Resend.com, to send emails
 
@@ -35,3 +35,19 @@ It is also possible to delete a session, to achieve that just do a
 `DELETE` request with your session in the headers
 
 All session have a duration of 1 hour, including their `time to live` in the Vercel's KV Storage
+
+### ✉️ Sending email
+
+Sending email can be done calling the following endpoint
+
+```sh
+curl --request POST \
+  --url http://localhost:3000/api/this \
+  --header 'Authorization: Bearer your_token' \
+  --header 'Content-Type: application/json' \
+  --data '{
+ "to": "destination@email.com",
+ "subject": "Email subject",
+ "html": "<p>HTML email content</p>"
+}'
+```
